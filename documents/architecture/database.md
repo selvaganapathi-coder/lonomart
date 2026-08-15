@@ -2,11 +2,11 @@
 
 ## Actual implementation
 
-Prisma is configured with a PostgreSQL datasource using `env("DATABASE_URL")`. No application tables exist yet.
+Prisma is configured for PostgreSQL with a Prisma 7 configuration file. The schema declares the PostgreSQL provider and no application models. `prisma.config.ts` points the Prisma CLI at `prisma/schema.prisma`, declares the future migration path, and reads the datasource URL from `process.env.DATABASE_URL`.
 
 ## Environment
 
-- `DATABASE_URL`: required for Prisma and application database access.
+- `DATABASE_URL`: required for Prisma commands that need database connectivity and future application database access.
 - `DIRECT_DATABASE_URL`: reserved for future migration workflows if a pooled URL is used for runtime traffic.
 
 Secrets must live in local `.env*` files or deployment secret stores and must never be committed.
