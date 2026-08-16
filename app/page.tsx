@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Button, Card } from "antd";
 import {
   TypographyParagraph,
@@ -17,13 +18,19 @@ export default function Home() {
         </TypographyTitle>
 
         <TypographyParagraph className="!mb-6 text-base text-slate-600">
-          The Lonomart application foundation is ready for the next vertical
-          slice: account and authentication.
+          Create an account, choose a template, customize your website, and publish it.
         </TypographyParagraph>
 
-        <Button type="primary" size="large">
-          Get started
-        </Button>
+        <div className="flex flex-wrap gap-3">
+          <Link href="/sign-up">
+            <Button type="primary" size="large">
+              Create account
+            </Button>
+          </Link>
+          <Link href="/sign-in">
+            <Button size="large">Sign in</Button>
+          </Link>
+        </div>
       </Card>
     </main>
   );
