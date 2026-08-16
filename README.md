@@ -1,39 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Lonomart
 
-## Getting Started
+Lonomart is a SaaS website creation and publishing platform focused on helping small businesses and individuals create a professional website in approximately 3–5 minutes.
 
-First, run the development server:
+## Core workflow
+
+**Choose → Customize → Preview → Publish**
+
+## Technology
+
+- Next.js 16.3.1
+- React 19.2.8
+- TypeScript
+- Ant Design
+- Tailwind CSS 4
+- PostgreSQL
+- Prisma ORM
+- Cloudflare Workers / OpenNext
+- Cloudflare R2
+
+## Development
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start development:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Run linting:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run lint
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Run tests:
 
-## Learn More
+```bash
+npm test
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Database
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Set `DATABASE_URL` in the local environment before running Prisma database commands.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run db:generate
+npm run db:migrate
+npm run db:studio
+```
 
-## Deploy on Vercel
+## Cloudflare
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+OpenNext provides the Cloudflare deployment adapter.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run cloudflare:build
+npm run cloudflare:preview
+npm run cloudflare:deploy
+```
 
+Cloudflare credentials, database URLs, R2 credentials, and other secrets must never be committed.
 
-by selvaganapthi mani
+## Documentation
+
+Project engineering documentation lives under [`documents/`](./documents/).
+
+## MVP scope
+
+The first release focuses on authentication, website creation, templates, quick setup, structured editing, preview, publishing, public websites, basic SEO, and basic project management.
+
+Advanced editor capabilities, e-commerce, custom domains, AI generation, collaboration, and other roadmap features are intentionally deferred.
