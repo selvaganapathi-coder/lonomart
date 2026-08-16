@@ -1,14 +1,16 @@
 # Current State
 
-**Date:** 2026-08-16
+**Date:** 2026-08-17
 
 ## Phase
 
-Authentication vertical slice in progress.
+Dashboard foundation.
 
 ## Current task
 
-TASK-002 — Authentication Foundation — **IN_PROGRESS**
+TASK-003 — User Dashboard Foundation — **IN_PROGRESS**
+
+TASK-002 — Authentication Foundation — **DONE**.
 
 TASK-001 — Lonomart Foundation & Architecture Bootstrap — **DONE**.
 
@@ -28,61 +30,42 @@ Lonomart is a Next.js 16.3.1 App Router application using TypeScript, React 19.2
 - Initial ADRs established.
 - MVP task backlog established.
 
-## TASK-001 Local Verification
+## Completed in TASK-002
 
-The following checks were executed successfully on the developer's local Windows environment:
+- Better Auth integrated with Prisma 7 and PostgreSQL.
+- Database-backed authentication sessions implemented.
+- Better Auth Prisma models and migration added.
+- Email/password sign-up and sign-in implemented.
+- Protected `/dashboard` server-side session boundary implemented.
+- Sign-out implemented.
+- Authentication security configuration and documentation added.
+- Authentication flow manually verified locally.
+- Lint, TypeScript, tests, Prisma validation/generation, database migration, Next.js build, and Cloudflare/OpenNext build verified locally.
 
-- `npm install` — PASS
-- `npm run dev` — PASS
-- Lonomart foundation page renders — PASS
-- `npm run build` — PASS
-- `npx tsc --noEmit` — PASS
-- `npx prisma validate` — PASS
-- `npx prisma generate` — PASS
-- `npm run cloudflare:build` — PASS
+## TASK-003 Implementation Status
 
-## TASK-002 Implementation Status
+Implemented on `agent/task-003-dashboard-foundation`:
 
-Implemented on `agent/task-002-authentication`:
-
-- Better Auth dependency and Prisma 7 PostgreSQL adapter dependencies added.
-- Better Auth Prisma models added to the schema.
-- Version-controlled authentication migration added.
-- Prisma 7 client singleton using `@prisma/adapter-pg` added.
-- Better Auth server configuration added with email/password, trusted origin, rate limiting, and secure Next.js cookie integration.
-- `/api/auth/[...all]` route added.
-- Sign-up and sign-in Ant Design UI added.
-- Protected `/dashboard` server-side session boundary added.
-- Sign-out control added.
-- Authentication architecture documentation and ADR-009 added.
-- `.env.example` added for required authentication environment variables.
-
-## TASK-002 Verification Status
-
-**NOT YET VERIFIED in this environment:**
-
-- Dependency installation after adding Better Auth packages.
-- Regenerated `package-lock.json`.
-- Prisma validation/generation with the new authentication schema.
-- Authentication migration against the configured PostgreSQL database.
-- Sign-up/sign-in/sign-out end-to-end flow.
-- TypeScript.
-- Lint.
-- Production build.
-- Cloudflare/OpenNext build.
-
-These must be executed locally before TASK-002 can be marked DONE.
+- Authenticated dashboard shell.
+- Lonomart dashboard header.
+- Authenticated user greeting.
+- `My Websites` section.
+- Empty state for users without websites.
+- `Create Website` CTA intentionally disabled until website creation is implemented in a later task.
+- Existing sign-out control retained.
+- Existing Ant Design Typography client wrappers retained.
+- No database changes.
 
 ## Current Product Features
 
 Implemented:
 
 - Foundation
-- Authentication foundation (pending final verification)
+- Authentication
+- Dashboard foundation
 
 Not yet implemented:
 
-- User dashboard functionality
 - Website/project creation
 - Templates
 - Quick Setup
@@ -95,16 +78,16 @@ Not yet implemented:
 
 ## Security Status
 
-TASK-002 keeps Better Auth CSRF/origin protections enabled, uses explicit trusted origins, keeps the authentication secret server-side, uses database-backed sessions, and performs authoritative server-side session validation for `/dashboard`.
+Authentication continues to use Better Auth database-backed sessions and authoritative server-side session validation. TASK-003 introduces no new authorization surface beyond the existing protected dashboard.
 
 ## Scalability Status
 
-Initial architecture is designed around the 10,000 registered-user target. No load testing has been performed yet; no capacity target is claimed as measured.
+Initial architecture remains designed around the 10,000 registered-user target. No new infrastructure or database workload was introduced by TASK-003.
 
 ## Deployment Status
 
-Cloudflare/OpenNext foundation was verified in TASK-001. TASK-002 Cloudflare compatibility is pending local verification.
+Cloudflare/OpenNext compatibility was verified during TASK-002. TASK-003 requires local verification after the dashboard UI change.
 
 ## Next Recommended Task
 
-Finish TASK-002 verification, review the final diff, and only then merge the authentication PR. After TASK-002 is complete, proceed to TASK-003 — User Dashboard.
+Verify TASK-003 locally, review the final diff, and then prepare the dashboard foundation PR. After TASK-003 is complete, proceed to TASK-004 — Website Project Creation.
