@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
-import { Button, Card, Typography } from "antd";
+import { Card, Typography } from "antd";
 import { auth } from "@/lib/auth";
 import { SignOutButton } from "@/app/dashboard/sign-out-button";
 
