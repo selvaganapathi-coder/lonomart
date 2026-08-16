@@ -6,7 +6,9 @@
 
 - Started TASK-003 — User Dashboard Foundation.
 - Added authenticated dashboard management shell.
-- Added `My Websites` empty state and Create Website CTA.
+- Added `My Websites` empty state and next-step indication.
+- Refined the dashboard toward a Google-inspired minimal visual system.
+- Reduced dashboard spacing and summary-card density so the primary empty state is visible earlier in the viewport.
 - Kept website persistence and creation workflow out of scope for TASK-003.
 
 ## 2026-08-16
