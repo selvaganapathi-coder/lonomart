@@ -2,7 +2,8 @@
 
 ## P0
 
-- TASK-002 — Authentication foundation
+- TASK-001 — Lonomart Foundation & Architecture Bootstrap — **DONE**
+- TASK-002 — Authentication foundation — **READY**
 - TASK-003 — User dashboard foundation
 - TASK-004 — Website project model
 - TASK-005 — Template schema and versioning
