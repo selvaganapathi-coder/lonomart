@@ -22,10 +22,11 @@ The dashboard is the first management surface after authentication. It must answ
 - Authenticated user greeting
 - My Websites section
 - Empty state for users without websites
-- Create Website CTA
+- Clear indication of the upcoming Create Website workflow
 - Existing sign-out control
 - Responsive layout using existing Tailwind + Ant Design architecture
 - Server-side Better Auth session protection
+- Google-inspired minimal visual system: white surfaces, restrained blue accent, thin borders, compact spacing, strong typography
 
 ## Non-Scope
 
@@ -57,11 +58,11 @@ The dashboard continues to use the existing server-side Better Auth session boun
 - Unauthenticated users are redirected to `/sign-in`.
 - The dashboard displays the authenticated user's available name.
 - A `My Websites` section is visible.
-- A clear `Create Website` CTA is visible but does not introduce website-creation scope.
-- A useful empty state is shown when the user has no websites.
+- The empty state and next-step indication are visible without requiring excessive scrolling on common desktop viewport sizes.
 - Existing sign-out functionality remains available.
 - Dashboard is responsive on mobile and desktop.
 - Existing Ant Design client-boundary wrappers are used for Typography components.
+- No non-functional mobile navigation controls are exposed.
 - No database migration is required.
 
 ## Verification
@@ -83,9 +84,12 @@ Manual checks:
 3. Confirm the dashboard renders without a runtime error.
 4. Confirm the authenticated user's name is displayed.
 5. Confirm `My Websites` and the empty state are visible.
-6. Sign out.
-7. Open `/dashboard` while signed out and confirm redirect to `/sign-in`.
+6. Confirm the dashboard remains visually usable at mobile width.
+7. Sign out.
+8. Open `/dashboard` while signed out and confirm redirect to `/sign-in`.
 
 ## Implementation Notes
 
-The Create Website CTA is intentionally disabled in TASK-003. Website creation is a separate task and must not be implemented implicitly through the dashboard foundation.
+The dashboard intentionally stops before website creation. The previous disabled `Create Website` control was replaced by an explicit `Create Website — coming next` status indicator so the UI does not present a misleading non-functional action. Website creation is a separate task and must not be implemented implicitly through the dashboard foundation.
+
+The final dashboard refinement reduces top-level spacing, tightens summary cards, brings the empty state into the initial viewport, narrows the desktop navigation rail, and removes the non-functional mobile menu control.
