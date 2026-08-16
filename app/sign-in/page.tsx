@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Alert, Button, Card, Form, Input, Typography } from "antd";
 import { signIn } from "@/lib/auth-client";
 
@@ -13,6 +14,7 @@ interface SignInValues {
 export default function SignInPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   async function handleSubmit(values: SignInValues) {
     setError(null);
@@ -29,7 +31,7 @@ export default function SignInPage() {
         return;
       }
 
-      window.location.assign("/dashboard");
+      router.push("/dashboard");
     } catch {
       setError("We could not sign you in. Please try again.");
     } finally {

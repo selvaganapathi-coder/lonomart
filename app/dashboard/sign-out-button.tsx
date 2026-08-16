@@ -1,18 +1,20 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "antd";
 import { signOut } from "@/lib/auth-client";
 
 export function SignOutButton() {
-  const [loading, setLoading] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
   async function handleSignOut() {
     setLoading(true);
 
     try {
       await signOut();
-      window.location.assign("/sign-in");
+      router.push("/sign-in");
     } finally {
       setLoading(false);
     }

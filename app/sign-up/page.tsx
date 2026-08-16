@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Alert, Button, Card, Form, Input, Typography } from "antd";
 import { signUp } from "@/lib/auth-client";
 
@@ -15,7 +16,7 @@ interface SignUpValues {
 export default function SignUpPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-
+  const router = useRouter();
   async function handleSubmit(values: SignUpValues) {
     setError(null);
     setLoading(true);
@@ -32,7 +33,7 @@ export default function SignUpPage() {
         return;
       }
 
-      window.location.assign("/dashboard");
+      router.push("/dashboard");
     } catch {
       setError("We could not create your account. Please try again.");
     } finally {
