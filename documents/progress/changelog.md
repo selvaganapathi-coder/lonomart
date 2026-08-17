@@ -2,14 +2,24 @@
 
 ## 2026-08-17
 
-### In Progress
+### TASK-004 — In Progress
 
-- Started TASK-003 — User Dashboard Foundation.
+- Added the first customer-owned `Website` database model.
+- Added Website status, ownership indexes and unique slug constraint.
+- Added Quick Setup business profile storage.
+- Added three curated starter-template choices with explicit versions.
+- Added authenticated website creation flow using a Next.js Server Action.
+- Added server-side validation and ownership enforcement.
+- Connected the dashboard to real website counts and recent website projects.
+- Added an authenticated website creation confirmation page.
+- Added TASK-004 architecture and task documentation.
+
+### TASK-003 Baseline
+
 - Added authenticated dashboard management shell.
 - Added `My Websites` empty state and next-step indication.
 - Refined the dashboard toward a Google-inspired minimal visual system.
 - Reduced dashboard spacing and summary-card density so the primary empty state is visible earlier in the viewport.
-- Kept website persistence and creation workflow out of scope for TASK-003.
 
 ## 2026-08-16
 
@@ -27,8 +37,9 @@
 
 - Foundation phase is complete.
 - Authentication foundation is complete.
-- TASK-003 — User Dashboard Foundation is the active task.
+- TASK-003 dashboard baseline is carried into TASK-004.
+- TASK-004 — Website Creation Foundation is the active task.
 
 ### Verification Note
 
-Verification was performed locally on Windows. Production deployment, PostgreSQL production connectivity, R2 connectivity, and load testing remain unverified until their respective tasks require them.
+Verification is performed locally on Windows. Production deployment, PostgreSQL production connectivity, R2 connectivity, and load testing remain unverified until their respective tasks require them.
