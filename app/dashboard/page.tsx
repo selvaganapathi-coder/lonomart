@@ -1,8 +1,10 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { Card, Tag } from "antd";
 
 import { auth } from "@/lib/auth";
+import prisma from "@/lib/prisma";
 import { SignOutButton } from "@/app/dashboard/sign-out-button";
 import {
   TypographyParagraph,
@@ -87,6 +89,28 @@ export default async function DashboardPage() {
     redirect("/sign-in");
   }
 
+  const [websites, publishedCount] = await Promise.all([
+    prisma.website.findMany({
+      where: { userId: session.user.id },
+      orderBy: { updatedAt: "desc" },
+      take: 12,
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        status: true,
+        templateKey: true,
+        updatedAt: true,
+      },
+    }),
+    prisma.website.count({
+      where: {
+        userId: session.user.id,
+        status: "PUBLISHED",
+      },
+    }),
+  ]);
+
   const userName = session.user.name || "there";
   const firstName = userName.split(" ")[0] || "there";
   const userInitials = initials(session.user.name || "User");
@@ -105,15 +129,15 @@ export default async function DashboardPage() {
 
           <nav className="flex-1 px-3 py-5" aria-label="Dashboard navigation">
             <div className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">Workspace</div>
-            <div className="flex items-center gap-3 rounded-lg bg-[#e8f0fe] px-3 py-2.5 text-sm font-medium text-[#174ea6]">
+            <Link href="/dashboard" className="flex items-center gap-3 rounded-lg bg-[#e8f0fe] px-3 py-2.5 text-sm font-medium text-[#174ea6] no-underline">
               <Icon name="grid" />
               Overview
-            </div>
-            <div className="mt-1 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-slate-600">
+            </Link>
+            <Link href="/dashboard#websites" className="mt-1 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-slate-600 no-underline hover:bg-slate-50">
               <Icon name="globe" />
               Websites
-              <span className="ml-auto rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-500">0</span>
-            </div>
+              <span className="ml-auto rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-500">{websites.length}</span>
+            </Link>
 
             <div className="mb-2 mt-7 px-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">Account</div>
             <div className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-slate-600">
@@ -153,32 +177,37 @@ export default async function DashboardPage() {
           </header>
 
           <div className="mx-auto w-full max-w-[1180px] px-5 py-6 sm:px-8 sm:py-8 lg:px-10 lg:py-9">
-            <section className="mb-7 max-w-3xl">
-              <TypographyText className="!text-sm !font-medium !text-[#1a73e8]">Your workspace</TypographyText>
-              <TypographyTitle level={1} className="!mb-2 !mt-1 !text-3xl !font-normal !tracking-tight !text-slate-900 sm:!text-4xl">
-                Welcome, {firstName}
-              </TypographyTitle>
-              <TypographyParagraph className="!mb-0 !max-w-2xl !text-base !leading-6 !text-slate-600">
-                Everything you need to create, customize and publish your next website.
-              </TypographyParagraph>
+            <section className="mb-7 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+              <div className="max-w-3xl">
+                <TypographyText className="!text-sm !font-medium !text-[#1a73e8]">Your workspace</TypographyText>
+                <TypographyTitle level={1} className="!mb-2 !mt-1 !text-3xl !font-normal !tracking-tight !text-slate-900 sm:!text-4xl">
+                  Welcome, {firstName}
+                </TypographyTitle>
+                <TypographyParagraph className="!mb-0 !max-w-2xl !text-base !leading-6 !text-slate-600">
+                  Everything you need to create, customize and publish your next website.
+                </TypographyParagraph>
+              </div>
+              <Link href="/dashboard/websites/new" className="inline-flex h-10 shrink-0 items-center justify-center rounded-lg bg-[#1a73e8] px-5 text-sm font-medium text-white no-underline hover:bg-[#1765cc]">
+                Create website
+              </Link>
             </section>
 
             <section className="mb-7 grid gap-3 sm:grid-cols-3">
-              <Card bordered={false} className="!rounded-xl !bg-white !shadow-none !p-0 ring-1 ring-slate-200">
+              <Card bordered={false} className="!rounded-xl !bg-white !p-0 !shadow-none ring-1 ring-slate-200">
                 <div className="px-5 py-4">
                   <TypographyText className="!text-xs !font-medium !text-slate-500">Websites</TypographyText>
-                  <div className="mt-2 text-2xl font-normal tracking-tight text-slate-900">0</div>
-                  <div className="mt-0.5 text-xs text-slate-500">Ready to create</div>
+                  <div className="mt-2 text-2xl font-normal tracking-tight text-slate-900">{websites.length}</div>
+                  <div className="mt-0.5 text-xs text-slate-500">Your website projects</div>
                 </div>
               </Card>
-              <Card bordered={false} className="!rounded-xl !bg-white !shadow-none !p-0 ring-1 ring-slate-200">
+              <Card bordered={false} className="!rounded-xl !bg-white !p-0 !shadow-none ring-1 ring-slate-200">
                 <div className="px-5 py-4">
                   <TypographyText className="!text-xs !font-medium !text-slate-500">Published</TypographyText>
-                  <div className="mt-2 text-2xl font-normal tracking-tight text-slate-900">0</div>
-                  <div className="mt-0.5 text-xs text-slate-500">Nothing live yet</div>
+                  <div className="mt-2 text-2xl font-normal tracking-tight text-slate-900">{publishedCount}</div>
+                  <div className="mt-0.5 text-xs text-slate-500">Websites currently live</div>
                 </div>
               </Card>
-              <Card bordered={false} className="!rounded-xl !bg-white !shadow-none !p-0 ring-1 ring-slate-200">
+              <Card bordered={false} className="!rounded-xl !bg-white !p-0 !shadow-none ring-1 ring-slate-200">
                 <div className="px-5 py-4">
                   <TypographyText className="!text-xs !font-medium !text-slate-500">Plan</TypographyText>
                   <div className="mt-2 text-2xl font-normal tracking-tight text-slate-900">Free</div>
@@ -187,25 +216,50 @@ export default async function DashboardPage() {
               </Card>
             </section>
 
-            <section aria-labelledby="websites-heading">
+            <section id="websites" aria-labelledby="websites-heading">
               <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                 <div>
                   <TypographyTitle id="websites-heading" level={2} className="!mb-1 !mt-0 !text-xl !font-medium !tracking-tight !text-slate-900">My Websites</TypographyTitle>
                   <TypographyParagraph type="secondary" className="!mb-0 !text-sm">Manage your websites and publishing status from here.</TypographyParagraph>
                 </div>
-                <Tag className="!m-0 w-fit rounded-full !border-slate-200 !bg-white !px-3 !py-1 !text-xs !text-slate-500">Create Website — coming next</Tag>
+                {websites.length > 0 ? (
+                  <Link href="/dashboard/websites/new" className="text-sm font-medium text-[#1a73e8] no-underline hover:underline">Create another website</Link>
+                ) : null}
               </div>
 
-              <Card bordered={false} className="!rounded-xl !bg-white !p-0 !shadow-none ring-1 ring-slate-200">
-                <div className="grid min-h-[245px] place-items-center px-6 py-8 text-center">
-                  <div className="max-w-[430px]">
-                    <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#e8f0fe] text-[#1a73e8]"><Icon name="spark" /></div>
-                    <TypographyTitle level={3} className="!mb-1.5 !mt-0 !text-xl !font-medium !tracking-tight !text-slate-900">Create your first website</TypographyTitle>
-                    <TypographyParagraph type="secondary" className="!mb-3 !text-sm !leading-6">Start with a professional template, add your business details, customize the content and publish when you are ready.</TypographyParagraph>
-                    <div className="inline-flex items-center gap-2 text-xs font-medium text-slate-500">Website creation is the next step <Icon name="arrow" /></div>
+              {websites.length === 0 ? (
+                <Card bordered={false} className="!rounded-xl !bg-white !p-0 !shadow-none ring-1 ring-slate-200">
+                  <div className="grid min-h-[245px] place-items-center px-6 py-8 text-center">
+                    <div className="max-w-[430px]">
+                      <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#e8f0fe] text-[#1a73e8]"><Icon name="spark" /></div>
+                      <TypographyTitle level={3} className="!mb-1.5 !mt-0 !text-xl !font-medium !tracking-tight !text-slate-900">Create your first website</TypographyTitle>
+                      <TypographyParagraph type="secondary" className="!mb-4 !text-sm !leading-6">Start with a professional template, add your business details, customize the content and publish when you are ready.</TypographyParagraph>
+                      <Link href="/dashboard/websites/new" className="inline-flex h-10 items-center justify-center rounded-lg bg-[#1a73e8] px-5 text-sm font-medium text-white no-underline hover:bg-[#1765cc)">Create website</Link>
+                    </div>
                   </div>
+                </Card>
+              ) : (
+                <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+                  {websites.map((website) => (
+                    <Link key={website.id} href={`/dashboard/websites/${website.id}/setup`} className="no-underline">
+                      <Card bordered={false} className="!h-full !rounded-xl !bg-white !p-0 !shadow-none ring-1 ring-slate-200 transition hover:-translate-y-0.5 hover:ring-slate-300">
+                        <div className="p-5">
+                          <div className="mb-5 flex items-start justify-between gap-3">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#e8f0fe] text-sm font-semibold text-[#174ea6]">{website.name.slice(0, 1).toUpperCase()}</div>
+                            <Tag className="!m-0 rounded-full !border-slate-200 !bg-white !px-2.5 !py-0.5 !text-[10px] !text-slate-500">{website.status.toLowerCase()}</Tag>
+                          </div>
+                          <TypographyTitle level={3} className="!mb-1 !mt-0 !text-lg !font-medium !tracking-tight">{website.name}</TypographyTitle>
+                          <TypographyParagraph type="secondary" className="!mb-4 !truncate !text-xs">{website.slug}.lonomart.com</TypographyParagraph>
+                          <div className="flex items-center justify-between border-t border-slate-100 pt-3 text-xs text-slate-500">
+                            <span>{website.templateKey.replaceAll("-", " ")}</span>
+                            <span>Updated {website.updatedAt.toLocaleDateString()}</span>
+                          </div>
+                        </div>
+                      </Card>
+                    </Link>
+                  ))}
                 </div>
-              </Card>
+              )}
             </section>
           </div>
         </div>
