@@ -4,11 +4,13 @@
 
 ## Phase
 
-Dashboard foundation.
+Website project creation.
 
 ## Current task
 
-TASK-003 — User Dashboard Foundation — **IN_PROGRESS**
+TASK-004 — Website Creation Foundation — **IN_PROGRESS**
+
+TASK-003 — User Dashboard Foundation — **CARRIED FORWARD ON TASK-004 BRANCH; LOCAL VERIFICATION PENDING**.
 
 TASK-002 — Authentication Foundation — **DONE**.
 
@@ -42,19 +44,29 @@ Lonomart is a Next.js 16.3.1 App Router application using TypeScript, React 19.2
 - Authentication flow manually verified locally.
 - Lint, TypeScript, tests, Prisma validation/generation, database migration, Next.js build, and Cloudflare/OpenNext build verified locally.
 
-## TASK-003 Implementation Status
+## TASK-003 Baseline
 
-Implemented on `agent/task-003-dashboard-foundation`:
-
-- Authenticated dashboard shell.
-- Lonomart dashboard header.
+- Google-inspired authenticated dashboard shell.
+- Lonomart dashboard header and navigation.
 - Authenticated user greeting.
-- `My Websites` section.
-- Empty state for users without websites.
-- `Create Website` CTA intentionally disabled until website creation is implemented in a later task.
+- My Websites empty state.
+- Responsive desktop/mobile layout.
 - Existing sign-out control retained.
-- Existing Ant Design Typography client wrappers retained.
-- No database changes.
+- Existing Ant Design Typography wrappers retained.
+
+## TASK-004 Implementation Status
+
+Implemented on `agent/task-004-website-creation`:
+
+- `Website` Prisma model with ownership and lifecycle status.
+- Versioned starter-template key on each website instance.
+- Structured Quick Setup `businessProfile` JSON.
+- Prisma migration for the Website table.
+- Three curated starter-template choices.
+- Authenticated website creation page.
+- Server-side validation and ownership enforcement.
+- Dashboard website counts and website cards.
+- Authenticated website creation confirmation page.
 
 ## Current Product Features
 
@@ -63,31 +75,35 @@ Implemented:
 - Foundation
 - Authentication
 - Dashboard foundation
+- Website project creation foundation
+- Quick Setup
+- Starter template selection metadata
 
 Not yet implemented:
 
-- Website/project creation
-- Templates
-- Quick Setup
+- Full template master/version architecture
+- Page model
+- Section model
 - Website editor
 - Asset management
 - Preview
 - Publishing
 - Public website renderer
 - SEO
+- Custom domains
 
 ## Security Status
 
-Authentication continues to use Better Auth database-backed sessions and authoritative server-side session validation. TASK-003 introduces no new authorization surface beyond the existing protected dashboard.
+Better Auth continues to provide database-backed sessions. TASK-004 validates the authenticated session inside the Server Action before creating a Website. Website reads are scoped by both website ID and authenticated user ID. No client-supplied owner ID is accepted.
 
 ## Scalability Status
 
-Initial architecture remains designed around the 10,000 registered-user target. No new infrastructure or database workload was introduced by TASK-003.
+The Website model uses ownership and ownership/status indexes. Dashboard website cards are bounded to the most recent 12 projects, while total counts use database count queries. No additional infrastructure was introduced.
 
 ## Deployment Status
 
-Cloudflare/OpenNext compatibility was verified during TASK-002. TASK-003 requires local verification after the dashboard UI change.
+TASK-004 contains a new database migration and new server-side database queries. Local Prisma migration, TypeScript, build and Cloudflare verification are still required before this task can be marked complete.
 
 ## Next Recommended Task
 
-Verify TASK-003 locally, review the final diff, and then prepare the dashboard foundation PR. After TASK-003 is complete, proceed to TASK-004 — Website Project Creation.
+Verify TASK-004 locally, review the final diff, apply the Website migration to the development database, and manually test the full create-website flow. After TASK-004 is verified, proceed to the full template architecture/task.
