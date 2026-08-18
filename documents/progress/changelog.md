@@ -2,7 +2,18 @@
 
 ## 2026-08-18
 
-### TASK-005 — In Progress
+### TASK-006 — In Progress
+
+- Added a typed website renderer boundary independent from editor components.
+- Added responsive renderers for hero, about, services, CTA and contact sections.
+- Added a safe fallback for unknown section types.
+- Added authenticated, ownership-scoped draft website preview.
+- Added page selection in preview.
+- Added preview actions to the website setup screen.
+- Added renderer content contract tests.
+- Added ADR-010 documenting the renderer/editor boundary.
+
+### TASK-005 — Completed
 
 - Added versioned code-managed template definitions.
 - Added structured WebsitePage and WebsiteSection models.
@@ -19,18 +30,6 @@
 - Verified Quick Setup, website creation, TypeScript, production build and Cloudflare/OpenNext build locally.
 
 ## 2026-08-17
-
-### TASK-004 — In Progress
-
-- Added the first customer-owned `Website` database model.
-- Added Website status, ownership indexes and unique slug constraint.
-- Added Quick Setup business profile storage.
-- Added three curated starter-template choices with explicit versions.
-- Added authenticated website creation flow using a Next.js Server Action.
-- Added server-side validation and ownership enforcement.
-- Connected the dashboard to real website counts and recent website projects.
-- Added an authenticated website creation confirmation page.
-- Added TASK-004 architecture and task documentation.
 
 ### TASK-003 Baseline
 
@@ -57,7 +56,8 @@
 - Authentication foundation is complete.
 - TASK-003 dashboard foundation is complete.
 - TASK-004 website creation foundation is complete.
-- TASK-005 — Template & Website Structure is the active task.
+- TASK-005 template and website structure is complete.
+- TASK-006 website renderer and preview is the active task.
 
 ### Verification Note
 
