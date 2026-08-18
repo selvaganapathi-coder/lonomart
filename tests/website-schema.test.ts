@@ -13,7 +13,7 @@ describe("website schema contract", () => {
 
     expect(schema).toContain("model Website {");
     expect(schema).toContain("userId            String");
-    expect(schema).toContain("user User @relation");
+    expect(schema).toMatch(/user\s+User\s+@relation\(fields: \[userId\]/);
     expect(schema).toContain("businessProfile   Json");
   });
 

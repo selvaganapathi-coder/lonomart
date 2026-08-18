@@ -14,27 +14,53 @@ Better Auth owns the authentication records stored in PostgreSQL: users, session
 
 ## Website project model
 
-TASK-004 introduces the first customer-owned business entity: `Website`.
+`Website` is the customer-owned project boundary. A Website belongs to exactly one User and contains the project identity, lifecycle state, selected template key/version and Quick Setup business profile.
 
-A Website belongs to exactly one User and contains the minimum project state required to start the website-building workflow:
+## Website structure
 
-- identity (`id`, `name`, `slug`)
-- lifecycle (`status`)
-- starter template reference (`templateKey`, `templateVersion`)
-- Quick Setup data (`businessProfile` JSON)
-- timestamps
+TASK-005 adds two customer-owned structural layers:
 
-The `businessProfile` JSON is intentionally scoped to the Quick Setup payload. It avoids premature normalization while the final template/page/section schemas are not yet implemented.
+```text
+Website
+  └── WebsitePage
+        └── WebsiteSection
+```
+
+`WebsitePage` stores page identity and ordering:
+
+- `slug`
+- `title`
+- `description`
+- `sortOrder`
+- `isHome`
+
+`WebsiteSection` stores the editable structured content boundary:
+
+- `type`
+- `version`
+- `sortOrder`
+- `visible`
+- `content` JSON
+
+Foreign keys cascade from Website to Page and Page to Section.
+
+## Template relationship
+
+Template definitions are currently code-managed and versioned by `key` + `version`. When a Website is created, the selected definition is instantiated into WebsitePage and WebsiteSection records.
+
+This is intentional: an existing customer website must not depend on a mutable master definition at render time.
 
 ## Indexing
 
-Website queries are primarily ownership-scoped. The schema therefore includes:
+Website queries are primarily ownership-scoped. The schema includes:
 
 - unique `slug` for future hosted-site lookup
 - `userId` index for ownership queries
 - `(userId, status)` index for dashboard status counts
-
-Dashboard list retrieval is bounded so a large website collection cannot create an unbounded initial payload.
+- `(websiteId, slug)` unique index for page identity
+- `(websiteId, sortOrder)` index for ordered page retrieval
+- `pageId` index for section retrieval
+- `(pageId, sortOrder)` index for ordered section retrieval
 
 ## Integrity principles
 
@@ -45,7 +71,4 @@ Dashboard list retrieval is bounded so a large website collection cannot create 
 - Avoid premature over-normalization.
 - Do not perform destructive production migrations without explicit approval.
 - Do not trust customer-supplied owner identifiers.
-
-## Future schema layers
-
-The full website architecture will later add template versions, pages, sections, assets, draft state and publication versions. Those entities should be introduced as separate vertical slices after their schemas are defined.
+- Do not allow mutable template definitions to silently alter existing WebsitePage or WebsiteSection records.

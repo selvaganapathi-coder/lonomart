@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { getStarterTemplate } from "@/lib/templates/catalog";
+import { getTemplateDefinition } from "@/lib/templates/definitions";
 
 export type CreateWebsiteState = {
   error?: string;
@@ -71,6 +72,11 @@ export async function createWebsite(
     return { error: "Please select a valid starter template." };
   }
 
+  const templateDefinition = getTemplateDefinition(template.key, businessName, description);
+  if (!templateDefinition || templateDefinition.version !== template.version) {
+    return { error: "The selected template is not available for this version." };
+  }
+
   if (email && !/^\S+@\S+\.\S+$/.test(email)) {
     return { error: "Enter a valid business email address." };
   }
@@ -110,6 +116,24 @@ export async function createWebsite(
           label: primaryCtaLabel || "Contact Us",
           url: primaryCtaUrl,
         },
+      },
+      pages: {
+        create: templateDefinition.pages.map((page) => ({
+          slug: page.slug,
+          title: page.title,
+          description: page.description,
+          sortOrder: page.sortOrder,
+          isHome: page.isHome,
+          sections: {
+            create: page.sections.map((section) => ({
+              type: section.type,
+              version: section.version,
+              sortOrder: section.sortOrder,
+              visible: true,
+              content: section.content,
+            })),
+          },
+        })),
       },
     },
     select: { id: true },
