@@ -7,6 +7,12 @@ datasource db {
   provider = "postgresql"
 }
 
+enum WebsiteStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
 model User {
   id            String    @id
   name          String
@@ -17,6 +23,7 @@ model User {
   updatedAt     DateTime
   sessions      Session[]
   accounts      Account[]
+  websites      Website[]
 
   @@map("user")
 }
@@ -67,4 +74,23 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+model Website {
+  id                String        @id @default(cuid())
+  userId            String
+  name              String
+  slug              String        @unique
+  status            WebsiteStatus @default(DRAFT)
+  templateKey       String
+  templateVersion   Int           @default(1)
+  businessProfile   Json
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, status])
+  @@map("website")
 }
