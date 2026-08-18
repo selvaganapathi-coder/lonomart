@@ -1,3 +1,4 @@
+import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -7,5 +8,7 @@ const nextConfig: NextConfig = {
     "pg-cloudflare",
   ],
 };
+
+initOpenNextCloudflareForDev();
 
 export default nextConfig;
