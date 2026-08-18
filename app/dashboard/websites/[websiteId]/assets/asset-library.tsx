@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState, useTransition } from "react";
 
 type Asset = {
@@ -83,7 +84,7 @@ export function AssetLibrary({ websiteId }: { websiteId: string }) {
           <h2 className="text-base font-semibold">Your images</h2>
           <span className="text-xs text-slate-500">{assets.length} {assets.length === 1 ? "asset" : "assets"}</span>
         </div>
-        {loading ? <div className="rounded-2xl border border-slate-200 bg-white p-8 text-center text-sm text-slate-500">Loading assets…</div> : assets.length === 0 ? <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center"><p className="text-sm font-medium text-slate-700">No images yet</p><p className="mt-1 text-sm text-slate-500">Upload your first image to start building your media library.</p></div> : <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">{assets.map((asset) => <article key={asset.id} className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"><div className="aspect-[4/3] bg-slate-100"><img src={`/api/websites/${websiteId}/assets/${asset.id}`} alt={asset.filename} className="h-full w-full object-cover" /></div><div className="p-3.5"><p className="truncate text-sm font-medium text-slate-900">{asset.filename}</p><p className="mt-1 text-xs text-slate-500">{formatSize(asset.size)} · {asset.contentType.replace("image/", "")}</p><button type="button" onClick={() => remove(asset)} disabled={deletingId === asset.id} className="mt-3 text-xs font-medium text-red-600 hover:text-red-700 disabled:opacity-50">{deletingId === asset.id ? "Deleting…" : "Delete"}</button></div></article>)}</div>}
+        {loading ? <div className="rounded-2xl border border-slate-200 bg-white p-8 text-center text-sm text-slate-500">Loading assets…</div> : assets.length === 0 ? <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center"><p className="text-sm font-medium text-slate-700">No images yet</p><p className="mt-1 text-sm text-slate-500">Upload your first image to start building your media library.</p></div> : <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">{assets.map((asset) => <article key={asset.id} className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"><div className="relative aspect-[4/3] bg-slate-100"><Image src={`/api/websites/${websiteId}/assets/${asset.id}`} alt={asset.filename} fill unoptimized className="object-cover" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw" /></div><div className="p-3.5"><p className="truncate text-sm font-medium text-slate-900">{asset.filename}</p><p className="mt-1 text-xs text-slate-500">{formatSize(asset.size)} · {asset.contentType.replace("image/", "")}</p><button type="button" onClick={() => remove(asset)} disabled={deletingId === asset.id} className="mt-3 text-xs font-medium text-red-600 hover:text-red-700 disabled:opacity-50">{deletingId === asset.id ? "Deleting…" : "Delete"}</button></div></article>)}</div>}
       </div>
     </div>
   );
