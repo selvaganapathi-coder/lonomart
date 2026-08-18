@@ -1,8 +1,11 @@
+type JsonValue = string | number | boolean | null | JsonValue[] | JsonObject;
+type JsonObject = { [key: string]: JsonValue };
+
 export type TemplateSectionDefinition = {
   type: string;
   version: number;
   sortOrder: number;
-  content: Record<string, unknown>;
+  content: JsonObject;
 };
 
 export type TemplatePageDefinition = {
