@@ -17,11 +17,12 @@ export function WebsiteRenderer({ website, pageSlug }: { website: RenderableWebs
   return (
     <div className="min-h-screen bg-white text-slate-950">
       <header className="sticky top-0 z-20 border-b border-slate-200/90 bg-white/95 backdrop-blur">
-        <div className="mx-auto flex min-h-16 max-w-6xl items-center justify-between gap-6 px-5 sm:px-8">
+        <div className="mx-auto flex min-h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-8">
           <Link href={`/dashboard/websites/${website.id}/preview?page=${encodeURIComponent(currentPage.slug)}`} className="flex min-w-0 items-center gap-3 no-underline">
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#1a73e8] text-sm font-bold text-white">{businessName.slice(0, 1).toUpperCase()}</span>
             <span className="truncate text-sm font-semibold tracking-tight text-slate-950">{businessName}</span>
           </Link>
+
           <nav className="hidden items-center gap-6 md:flex" aria-label="Website pages">
             {website.pages.map((page) => (
               <Link key={page.id} href={`/dashboard/websites/${website.id}/preview?page=${encodeURIComponent(page.slug)}`} className={`text-sm no-underline ${page.id === currentPage.id ? "font-medium text-slate-950" : "text-slate-600 hover:text-slate-950"}`}>
@@ -29,6 +30,22 @@ export function WebsiteRenderer({ website, pageSlug }: { website: RenderableWebs
               </Link>
             ))}
           </nav>
+
+          <details className="relative md:hidden">
+            <summary className="flex h-10 cursor-pointer list-none items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 text-sm font-medium text-slate-700 shadow-sm outline-none transition hover:border-slate-300 hover:text-slate-950 [&::-webkit-details-marker]:hidden">
+              <span>{currentPage.title}</span>
+              <span aria-hidden="true" className="text-xs text-slate-400">⌄</span>
+            </summary>
+            <div className="absolute right-0 top-[calc(100%+8px)] z-40 w-48 overflow-hidden rounded-xl border border-slate-200 bg-white p-1.5 shadow-lg ring-1 ring-black/5">
+              <nav aria-label="Website pages mobile">
+                {website.pages.map((page) => (
+                  <Link key={page.id} href={`/dashboard/websites/${website.id}/preview?page=${encodeURIComponent(page.slug)}`} className={`block rounded-lg px-3 py-2.5 text-sm no-underline transition ${page.id === currentPage.id ? "bg-slate-100 font-medium text-slate-950" : "text-slate-600 hover:bg-slate-50 hover:text-slate-950"}`}>
+                    {page.title}
+                  </Link>
+                ))}
+              </nav>
+            </div>
+          </details>
         </div>
       </header>
 
