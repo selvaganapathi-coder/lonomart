@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { getTemplateDefinition } from "@/lib/templates/definitions";
+import { getTemplateDefinition } from "../lib/templates/definitions";
 
 describe("template structure contract", () => {
   it("provides versioned pages for every starter template", () => {
