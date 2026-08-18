@@ -1,5 +1,23 @@
 # Changelog
 
+## 2026-08-18
+
+### TASK-005 — In Progress
+
+- Added versioned code-managed template definitions.
+- Added structured WebsitePage and WebsiteSection models.
+- Added page/section database migration and ordering indexes.
+- Instantiated template pages and sections during website creation.
+- Added server-side template/version validation.
+- Added website structure display to the website setup screen.
+- Added template structure contract tests.
+- Updated database and editor architecture documentation.
+
+### TASK-004 — Completed
+
+- Completed Website Creation Foundation and merged PR #6.
+- Verified Quick Setup, website creation, TypeScript, production build and Cloudflare/OpenNext build locally.
+
 ## 2026-08-17
 
 ### TASK-004 — In Progress
@@ -37,8 +55,9 @@
 
 - Foundation phase is complete.
 - Authentication foundation is complete.
-- TASK-003 dashboard baseline is carried into TASK-004.
-- TASK-004 — Website Creation Foundation is the active task.
+- TASK-003 dashboard foundation is complete.
+- TASK-004 website creation foundation is complete.
+- TASK-005 — Template & Website Structure is the active task.
 
 ### Verification Note
 
