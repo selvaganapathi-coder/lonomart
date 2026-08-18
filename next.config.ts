@@ -1,6 +1,8 @@
 import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
 import type { NextConfig } from "next";
 
+initOpenNextCloudflareForDev();
+
 const nextConfig: NextConfig = {
   serverExternalPackages: [
     "@prisma/client",
@@ -8,7 +10,5 @@ const nextConfig: NextConfig = {
     "pg-cloudflare",
   ],
 };
-
-initOpenNextCloudflareForDev();
 
 export default nextConfig;
