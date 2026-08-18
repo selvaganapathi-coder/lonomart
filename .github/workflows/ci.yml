@@ -22,6 +22,8 @@ jobs:
 
     env:
       DATABASE_URL: postgresql://ci:ci@localhost:5432/lonomart
+      BETTER_AUTH_URL: http://localhost:3000
+      BETTER_AUTH_SECRET: ci-only-better-auth-secret-32-characters-minimum
 
     steps:
       - name: Checkout
