@@ -40,7 +40,10 @@ export default async function WebsiteSetupPage({ params }: { params: Promise<{ w
             <Link href="/dashboard" className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#1a73e8] text-sm font-bold text-white no-underline">L</Link>
             <div className="leading-tight"><div className="text-sm font-semibold tracking-tight">{website.name}</div><div className="text-[11px] text-slate-500">Website workspace</div></div>
           </div>
-          <Tag className="!m-0 rounded-full !border-slate-200 !bg-white !px-3 !py-1 !text-xs !text-slate-600">Draft</Tag>
+          <div className="flex items-center gap-2">
+            <Link href={`/dashboard/websites/${website.id}/preview`} className="inline-flex h-9 items-center justify-center rounded-lg border border-slate-200 bg-white px-3.5 text-xs font-medium text-slate-700 no-underline hover:bg-slate-50">Preview</Link>
+            <Tag className="!m-0 rounded-full !border-slate-200 !bg-white !px-3 !py-1 !text-xs !text-slate-600">Draft</Tag>
+          </div>
         </div>
       </header>
 
@@ -103,7 +106,10 @@ export default async function WebsiteSetupPage({ params }: { params: Promise<{ w
           <TypographyParagraph className="!mb-0 !text-sm !leading-6">{profile.description}</TypographyParagraph>
         </Card>
 
-        <div className="mt-6"><Link href="/dashboard" className="inline-flex h-11 items-center justify-center rounded-lg bg-[#1a73e8] px-6 text-sm font-medium text-white no-underline hover:bg-[#1765cc]">Back to dashboard</Link></div>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Link href={`/dashboard/websites/${website.id}/preview`} className="inline-flex h-11 items-center justify-center rounded-lg bg-[#1a73e8] px-6 text-sm font-medium text-white no-underline hover:bg-[#1765cc]">Preview website</Link>
+          <Link href="/dashboard" className="inline-flex h-11 items-center justify-center rounded-lg border border-slate-200 bg-white px-6 text-sm font-medium text-slate-700 no-underline hover:bg-slate-50">Back to dashboard</Link>
+        </div>
       </div>
     </main>
   );

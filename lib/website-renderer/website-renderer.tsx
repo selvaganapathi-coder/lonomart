@@ -1,0 +1,62 @@
+import Link from "next/link";
+
+import { renderSection } from "./sections";
+import { stringValue } from "./section-content";
+import type { RenderableWebsite } from "./types";
+
+export function WebsiteRenderer({ website, pageSlug }: { website: RenderableWebsite; pageSlug?: string }) {
+  const profile = website.businessProfile;
+  const businessName = stringValue(profile.businessName, website.name);
+  const selectedPage = pageSlug ? website.pages.find((page) => page.slug === pageSlug) : undefined;
+  const currentPage = selectedPage ?? website.pages.find((page) => page.isHome) ?? website.pages[0];
+
+  if (!currentPage) {
+    return <div className="p-10 text-center text-sm text-slate-500">This website does not have a page to render yet.</div>;
+  }
+
+  return (
+    <div className="min-h-screen bg-white text-slate-950">
+      <header className="sticky top-0 z-20 border-b border-slate-200/90 bg-white/95 backdrop-blur">
+        <div className="mx-auto flex min-h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-8">
+          <Link href={`/dashboard/websites/${website.id}/preview?page=${encodeURIComponent(currentPage.slug)}`} className="flex min-w-0 items-center gap-3 no-underline">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#1a73e8] text-sm font-bold text-white">{businessName.slice(0, 1).toUpperCase()}</span>
+            <span className="truncate text-sm font-semibold tracking-tight text-slate-950">{businessName}</span>
+          </Link>
+
+          <nav className="hidden items-center gap-6 md:flex" aria-label="Website pages">
+            {website.pages.map((page) => (
+              <Link key={page.id} href={`/dashboard/websites/${website.id}/preview?page=${encodeURIComponent(page.slug)}`} className={`text-sm no-underline ${page.id === currentPage.id ? "font-medium text-slate-950" : "text-slate-600 hover:text-slate-950"}`}>
+                {page.title}
+              </Link>
+            ))}
+          </nav>
+
+          <details className="relative md:hidden">
+            <summary className="flex h-10 cursor-pointer list-none items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 text-sm font-medium text-slate-700 shadow-sm outline-none transition hover:border-slate-300 hover:text-slate-950 [&::-webkit-details-marker]:hidden">
+              <span>{currentPage.title}</span>
+              <span aria-hidden="true" className="text-xs text-slate-400">⌄</span>
+            </summary>
+            <div className="absolute right-0 top-[calc(100%+8px)] z-40 w-48 overflow-hidden rounded-xl border border-slate-200 bg-white p-1.5 shadow-lg ring-1 ring-black/5">
+              <nav aria-label="Website pages mobile">
+                {website.pages.map((page) => (
+                  <Link key={page.id} href={`/dashboard/websites/${website.id}/preview?page=${encodeURIComponent(page.slug)}`} className={`block rounded-lg px-3 py-2.5 text-sm no-underline transition ${page.id === currentPage.id ? "bg-slate-100 font-medium text-slate-950" : "text-slate-600 hover:bg-slate-50 hover:text-slate-950"}`}>
+                    {page.title}
+                  </Link>
+                ))}
+              </nav>
+            </div>
+          </details>
+        </div>
+      </header>
+
+      <main>{currentPage.sections.map((section) => <div key={section.id}>{renderSection(section)}</div>)}</main>
+
+      <footer className="border-t border-slate-200 bg-white px-5 py-8 sm:px-8">
+        <div className="mx-auto flex max-w-6xl flex-col gap-2 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+          <span>{businessName}</span>
+          <span>Website preview · Template v{website.templateVersion}</span>
+        </div>
+      </footer>
+    </div>
+  );
+}

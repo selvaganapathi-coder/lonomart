@@ -4,11 +4,13 @@
 
 ## Phase
 
-Template and website structure.
+Website rendering and preview foundation.
 
 ## Current task
 
-TASK-005 — Template & Website Structure — **IN_PROGRESS**
+TASK-006 — Website Renderer & Preview Foundation — **IN_PROGRESS**
+
+TASK-005 — Template & Website Structure — **DONE**.
 
 TASK-004 — Website Creation Foundation — **DONE**.
 
@@ -32,24 +34,24 @@ Lonomart is a Next.js 16.3.1 App Router application using TypeScript, React 19.2
 - Customer-owned Website model.
 - Quick Setup and starter-template selection.
 - Website creation and draft persistence.
+- Versioned template definitions.
+- Website pages and structured sections.
 
-## TASK-005 Implementation Status
+## TASK-006 Implementation Status
 
-Implemented on `agent/task-005-template-website-structure`:
+Implemented on `agent/task-006-website-renderer-preview`:
 
-- `WebsitePage` database model.
-- `WebsiteSection` database model.
-- Ordered page and section indexes.
-- Cascade deletion from Website → Page → Section.
-- Versioned code-managed template definitions.
-- Professional Services, Local Business and Restaurant page/section structures.
-- Server-side template definition/version validation.
-- Atomic Website + Page + Section creation through a nested Prisma write.
-- Secure structure retrieval scoped by authenticated user ownership.
-- Website setup screen showing instantiated pages and sections.
-- Template structure contract tests.
-- Architecture and task documentation.
-- Prisma migration for page/section records.
+- Typed renderable website/page/section boundary.
+- Safe JSON content helpers.
+- Hero, About, Services, CTA and Contact section renderers.
+- Safe fallback renderer for unknown section types.
+- Responsive WebsiteRenderer independent of editor components.
+- Authenticated draft preview route.
+- Ownership-scoped preview query.
+- Page selection through the preview query string.
+- Preview actions on the website setup screen.
+- Renderer content contract tests.
+- Renderer architecture decision documentation.
 
 ## Current Product Features
 
@@ -65,13 +67,13 @@ Implemented:
 - Website page structure
 - Website section structure
 - Structured section content
+- Draft website preview renderer
 
 Not yet implemented:
 
 - Visual website editor
 - Asset management
 - Draft editing/autosave
-- Preview renderer
 - Publishing
 - Public website renderer
 - SEO
@@ -90,22 +92,24 @@ WebsitePage
 WebsiteSection
   ↓
 Structured JSON content
+  ↓
+Renderer
 ```
 
-Template definitions are code-managed masters with explicit `key` and `version`. Website creation copies the selected definition into customer-owned page and section records. Existing customer structures therefore do not depend on mutable master template definitions.
+The renderer is a separate server-renderable module. It does not import editor components or editor state. Draft preview is authenticated and ownership-scoped. Public rendering will consume published state in a later task.
 
 ## Security Status
 
-Better Auth continues to provide database-backed sessions. Website structure creation and reads require an authenticated server session and are scoped by the authenticated user's ID. No client-supplied owner ID is trusted.
+Better Auth continues to provide database-backed sessions. Website creation, structure reads, and draft preview require an authenticated server session and are scoped by the authenticated user's ID. No client-supplied owner ID is trusted.
 
 ## Scalability Status
 
-Page and section queries are indexed by their parent relationships and ordering fields. Website creation uses a single nested Prisma write with transactional guarantees. No new infrastructure was introduced.
+The preview performs one ownership-scoped website query with ordered pages and sections. Rendering is server-side and introduces no new infrastructure.
 
 ## Deployment Status
 
-TASK-005 adds a database migration and new Prisma relations. Local migration, TypeScript, tests, production build, and Cloudflare/OpenNext verification are required before the task can be marked complete.
+TASK-006 adds no database migration and no new infrastructure. Local TypeScript, tests, lint, production build, and Cloudflare/OpenNext verification are required before the task can be marked complete.
 
 ## Next Recommended Task
 
-Verify TASK-005 locally, inspect the instantiated page/section structure, confirm the migration, run all quality gates, and then review the final diff before creating the PR.
+Verify TASK-006 locally with a newly created draft website, inspect desktop/mobile preview rendering, run all quality gates, review the final diff, and then create the PR.
