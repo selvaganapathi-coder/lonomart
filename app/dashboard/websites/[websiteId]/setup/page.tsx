@@ -41,6 +41,7 @@ export default async function WebsiteSetupPage({ params }: { params: Promise<{ w
             <div className="leading-tight"><div className="text-sm font-semibold tracking-tight">{website.name}</div><div className="text-[11px] text-slate-500">Website workspace</div></div>
           </div>
           <div className="flex items-center gap-2">
+            <Link href={`/dashboard/websites/${website.id}/edit`} className="inline-flex h-9 items-center justify-center rounded-lg bg-[#1a73e8] px-3.5 text-xs font-medium text-white no-underline hover:bg-[#1765cc]">Edit website</Link>
             <Link href={`/dashboard/websites/${website.id}/preview`} className="inline-flex h-9 items-center justify-center rounded-lg border border-slate-200 bg-white px-3.5 text-xs font-medium text-slate-700 no-underline hover:bg-slate-50">Preview</Link>
             <Tag className="!m-0 rounded-full !border-slate-200 !bg-white !px-3 !py-1 !text-xs !text-slate-600">Draft</Tag>
           </div>
@@ -51,7 +52,7 @@ export default async function WebsiteSetupPage({ params }: { params: Promise<{ w
         <section className="mb-7">
           <TypographyText className="!text-sm !font-medium !text-[#1a73e8]">Website structure ready</TypographyText>
           <TypographyTitle level={1} className="!mb-2 !mt-1 !text-3xl !font-normal !tracking-tight sm:!text-4xl">{website.name} has a versioned starting structure</TypographyTitle>
-          <TypographyParagraph type="secondary" className="!mb-0 !max-w-2xl !text-base !leading-6">The selected template has been instantiated into pages and structured sections. The editor will modify this data in a later task.</TypographyParagraph>
+          <TypographyParagraph type="secondary" className="!mb-0 !max-w-2xl !text-base !leading-6">The selected template has been instantiated into pages and structured sections. Edit the content without changing the underlying website structure.</TypographyParagraph>
         </section>
 
         <div className="grid gap-4 sm:grid-cols-2">
@@ -90,11 +91,7 @@ export default async function WebsiteSetupPage({ params }: { params: Promise<{ w
                   <TypographyText type="secondary" className="shrink-0 text-xs">{page.sections.length} sections</TypographyText>
                 </div>
                 <div className="mt-3 flex flex-wrap gap-2">
-                  {page.sections.map((section) => (
-                    <span key={section.id} className="rounded-md border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs text-slate-600">
-                      {section.type} · v{section.version}{!section.visible ? " · hidden" : ""}
-                    </span>
-                  ))}
+                  {page.sections.map((section) => <span key={section.id} className="rounded-md border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs text-slate-600">{section.type} · v{section.version}{!section.visible ? " · hidden" : ""}</span>)}
                 </div>
               </div>
             ))}
@@ -107,7 +104,8 @@ export default async function WebsiteSetupPage({ params }: { params: Promise<{ w
         </Card>
 
         <div className="mt-6 flex flex-wrap gap-3">
-          <Link href={`/dashboard/websites/${website.id}/preview`} className="inline-flex h-11 items-center justify-center rounded-lg bg-[#1a73e8] px-6 text-sm font-medium text-white no-underline hover:bg-[#1765cc]">Preview website</Link>
+          <Link href={`/dashboard/websites/${website.id}/edit`} className="inline-flex h-11 items-center justify-center rounded-lg bg-[#1a73e8] px-6 text-sm font-medium text-white no-underline hover:bg-[#1765cc]">Edit website</Link>
+          <Link href={`/dashboard/websites/${website.id}/preview`} className="inline-flex h-11 items-center justify-center rounded-lg border border-slate-200 bg-white px-6 text-sm font-medium text-slate-700 no-underline hover:bg-slate-50">Preview website</Link>
           <Link href="/dashboard" className="inline-flex h-11 items-center justify-center rounded-lg border border-slate-200 bg-white px-6 text-sm font-medium text-slate-700 no-underline hover:bg-slate-50">Back to dashboard</Link>
         </div>
       </div>
