@@ -1,30 +1,35 @@
 # Lonomart Task Backlog
 
-## P0
+This backlog reflects the actual implementation sequence in the repository. Historical task numbers are not renumbered after completion.
+
+## Completed
 
 - TASK-001 — Lonomart Foundation & Architecture Bootstrap — **DONE**
-- TASK-002 — Authentication foundation — **READY**
-- TASK-003 — User dashboard foundation
-- TASK-004 — Website project model
-- TASK-005 — Template schema and versioning
-- TASK-006 — Template catalog and selection
-- TASK-007 — Quick Setup and website instantiation
-- TASK-008 — Page and section model
-- TASK-009 — Structured editor foundation
-- TASK-010 — Asset storage and R2 upload
-- TASK-011 — Draft preview
-- TASK-012 — Publication model and publish workflow
-- TASK-013 — Public website renderer
+- TASK-002 — Authentication Foundation — **DONE**
+- TASK-003 — User Dashboard Foundation — **DONE**
+- TASK-004 — Website Creation Foundation — **DONE**
+- TASK-005 — Template & Website Structure — **DONE**
+- TASK-006 — Website Renderer & Preview Foundation — **DONE**
+- TASK-007 — GitHub Actions CI — **DONE**
+- TASK-008 — Production Visual Design System & Template Quality — **DONE**
 
-## P1
+## P0 — Next Product Foundations
 
-- TASK-014 — Basic SEO metadata
-- TASK-015 — Theme customization
-- TASK-016 — Performance and cache review
-- TASK-017 — Security review
-- TASK-018 — Load testing and 10K-user capacity review
-- TASK-019 — Production deployment
+- TASK-009 — Structured Website Editor Foundation — **READY**
+- TASK-010 — Asset Management and Cloudflare R2 Integration
+- TASK-011 — Draft Editing, Autosave and Revision Safety
+- TASK-012 — Publication Model and Publish Workflow
+- TASK-013 — Public Website Renderer
+
+## P1 — Production Readiness
+
+- TASK-014 — Basic SEO Metadata
+- TASK-015 — Theme and Visual Customization
+- TASK-016 — Performance and Cache Review
+- TASK-017 — Security Review
+- TASK-018 — Load Testing and Capacity Review
+- TASK-019 — Production Deployment
 
 ## Future / P2-P3
 
-Custom domains, e-commerce, advanced analytics, advanced SEO, AI generation, collaboration, teams, white-label, marketplace, mobile app, and advanced editor capabilities remain roadmap items.
+Custom domains, ecommerce, advanced analytics, advanced SEO, AI-assisted generation, collaboration, teams, white-label, marketplace, mobile app, and advanced editor capabilities remain roadmap items.

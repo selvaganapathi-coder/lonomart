@@ -4,11 +4,17 @@
 
 ## Phase
 
-Website rendering and preview foundation.
+Website editor foundation.
 
 ## Current task
 
-TASK-006 — Website Renderer & Preview Foundation — **IN_PROGRESS**
+TASK-009 — Structured Website Editor Foundation — **READY TO START**.
+
+TASK-008 — Production Visual Design System & Template Quality — **DONE**.
+
+TASK-007 — GitHub Actions CI — **DONE**.
+
+TASK-006 — Website Renderer & Preview Foundation — **DONE**.
 
 TASK-005 — Template & Website Structure — **DONE**.
 
@@ -36,22 +42,21 @@ Lonomart is a Next.js 16.3.1 App Router application using TypeScript, React 19.2
 - Website creation and draft persistence.
 - Versioned template definitions.
 - Website pages and structured sections.
+- Structured draft website renderer and preview.
+- Production visual foundation for the starter website.
+- GitHub Actions CI validation for pull requests and master pushes.
 
-## TASK-006 Implementation Status
+## TASK-008 Implementation Status
 
-Implemented on `agent/task-006-website-renderer-preview`:
+Implemented on `agent/task-008-production-visual-design`:
 
-- Typed renderable website/page/section boundary.
-- Safe JSON content helpers.
-- Hero, About, Services, CTA and Contact section renderers.
-- Safe fallback renderer for unknown section types.
-- Responsive WebsiteRenderer independent of editor components.
-- Authenticated draft preview route.
-- Ownership-scoped preview query.
-- Page selection through the preview query string.
-- Preview actions on the website setup screen.
-- Renderer content contract tests.
-- Renderer architecture decision documentation.
+- Production-oriented header and navigation treatment.
+- Responsive mobile navigation presentation.
+- Refined hero typography, spacing, CTA hierarchy, and visual composition.
+- Refined About, Services, CTA, Contact, and Footer sections.
+- Consistent visual treatment across the starter template.
+- Responsive desktop and mobile composition.
+- Preserved the data-driven renderer/editor boundary.
 
 ## Current Product Features
 
@@ -68,6 +73,8 @@ Implemented:
 - Website section structure
 - Structured section content
 - Draft website preview renderer
+- Production starter-template visual foundation
+- Automated CI validation
 
 Not yet implemented:
 
@@ -82,7 +89,7 @@ Not yet implemented:
 
 ## Architecture Status
 
-The website data boundary is now:
+The website data boundary remains:
 
 ```text
 Website
@@ -94,22 +101,34 @@ WebsiteSection
 Structured JSON content
   ↓
 Renderer
+  ↓
+Template visual system
 ```
 
-The renderer is a separate server-renderable module. It does not import editor components or editor state. Draft preview is authenticated and ownership-scoped. Public rendering will consume published state in a later task.
+The renderer remains separate from editor components and editor state. The visual template consumes structured content and does not hard-code customer-specific data.
 
 ## Security Status
 
-Better Auth continues to provide database-backed sessions. Website creation, structure reads, and draft preview require an authenticated server session and are scoped by the authenticated user's ID. No client-supplied owner ID is trusted.
+Better Auth continues to provide database-backed sessions. Website operations and draft preview require an authenticated server session and are scoped by the authenticated user's ID. No client-supplied owner ID is trusted.
 
-## Scalability Status
+## CI Status
 
-The preview performs one ownership-scoped website query with ordered pages and sections. Rendering is server-side and introduces no new infrastructure.
+GitHub Actions validates pull requests to `master` and pushes to `master` with:
+
+- Prisma validate.
+- Prisma generate.
+- ESLint.
+- TypeScript.
+- Vitest.
+- Next.js production build.
+- Cloudflare/OpenNext build.
 
 ## Deployment Status
 
-TASK-006 adds no database migration and no new infrastructure. Local TypeScript, tests, lint, production build, and Cloudflare/OpenNext verification are required before the task can be marked complete.
+Production and Cloudflare/OpenNext builds are verified locally for completed tasks. Production deployment, production PostgreSQL connectivity, R2 connectivity, and load testing remain separate concerns for later tasks.
 
 ## Next Recommended Task
 
-Verify TASK-006 locally with a newly created draft website, inspect desktop/mobile preview rendering, run all quality gates, review the final diff, and then create the PR.
+TASK-009 — Structured Website Editor Foundation.
+
+The editor should consume and mutate the existing structured WebsitePage/WebsiteSection model while reusing the existing renderer for live preview.
