@@ -90,6 +90,7 @@ model Website {
 
   user     User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   pages    WebsitePage[]
+  assets   WebsiteAsset[]
 
   @@index([userId])
   @@index([userId, status])
@@ -132,4 +133,21 @@ model WebsiteSection {
   @@index([pageId])
   @@index([pageId, sortOrder])
   @@map("website_section")
+}
+
+model WebsiteAsset {
+  id          String   @id @default(cuid())
+  websiteId   String
+  objectKey   String   @unique
+  filename    String
+  contentType String
+  size        Int
+  etag        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  website Website @relation(fields: [websiteId], references: [id], onDelete: Cascade)
+
+  @@index([websiteId, createdAt])
+  @@map("website_asset")
 }
