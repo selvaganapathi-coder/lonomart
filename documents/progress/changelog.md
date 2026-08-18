@@ -2,6 +2,31 @@
 
 ## 2026-08-18
 
+### TASK-010 — In Progress
+
+- Added the `WebsiteAsset` PostgreSQL model and migration.
+- Added the `LONOMART_ASSETS` Cloudflare R2 binding.
+- Added an OpenNext R2 storage adapter using the Worker binding API.
+- Added authenticated, ownership-scoped asset list/upload APIs.
+- Added authenticated, ownership-scoped asset read/delete APIs.
+- Restricted TASK-010 v1 uploads to JPEG, PNG and WebP images up to 10 MB.
+- Added a responsive website asset library UI.
+- Added editor → Assets navigation.
+- Enabled OpenNext Cloudflare bindings during local `next dev`.
+- Added TASK-010 implementation and verification documentation.
+
+### TASK-009 — Completed
+
+- Added authenticated website editor route.
+- Added page and section navigation.
+- Added structured section content editing and persistence.
+- Added ownership-scoped section update API.
+- Added editor → preview navigation.
+- Added responsive editor layout.
+- Verified editor save/reload and preview update behavior.
+- Verified lint, TypeScript, tests, Prisma validation/generation, production build and Cloudflare/OpenNext build.
+- Merged TASK-009 to `master`.
+
 ### Documentation Sync
 
 - Added the missing TASK-008 completion record for Production Visual Design System & Template Quality.
