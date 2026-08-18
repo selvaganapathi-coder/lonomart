@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
+import type { Prisma } from "@/generated/prisma/client";
 
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
@@ -22,6 +23,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ we
   });
   if (!section) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  await prisma.websiteSection.update({ where: { id: section.id }, data: { content: body.content } });
+  const content = body.content as Prisma.InputJsonValue;
+  await prisma.websiteSection.update({ where: { id: section.id }, data: { content } });
   return NextResponse.json({ ok: true });
 }
