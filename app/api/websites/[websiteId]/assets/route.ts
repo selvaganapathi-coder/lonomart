@@ -48,23 +48,20 @@ export async function POST(request: Request, { params }: { params: Promise<{ web
   if (!ALLOWED_TYPES.has(value.type)) return NextResponse.json({ error: "Only JPEG, PNG and WebP images are supported." }, { status: 415 });
   if (value.size === 0 || value.size > MAX_ASSET_SIZE) return NextResponse.json({ error: "Image size must be between 1 byte and 10 MB." }, { status: 413 });
 
+  const assetId = crypto.randomUUID();
+  const filename = safeFilename(value.name);
+  const objectKey = `users/${session.user.id}/websites/${websiteId}/assets/${assetId}/${filename}`;
+
   const asset = await prisma.websiteAsset.create({
-    data: {
-      websiteId,
-      objectKey: "pending",
-      filename: safeFilename(value.name),
-      contentType: value.type,
-      size: value.size,
-    },
+    data: { id: assetId, websiteId, objectKey, filename, contentType: value.type, size: value.size },
   });
-  const objectKey = `users/${session.user.id}/websites/${websiteId}/assets/${asset.id}/${safeFilename(value.name)}`;
 
   try {
     const bucket = getAssetBucket();
     const uploaded = await bucket.put(objectKey, await value.arrayBuffer(), { httpMetadata: { contentType: value.type } });
     const saved = await prisma.websiteAsset.update({
       where: { id: asset.id },
-      data: { objectKey, etag: uploaded.etag },
+      data: { etag: uploaded.etag },
       select: { id: true, filename: true, contentType: true, size: true, createdAt: true },
     });
     return NextResponse.json({ asset: saved }, { status: 201 });
