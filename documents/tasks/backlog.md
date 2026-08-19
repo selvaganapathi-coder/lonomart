@@ -14,11 +14,11 @@ This backlog reflects the actual implementation sequence in the repository. Hist
 - TASK-008 — Production Visual Design System & Template Quality — **DONE**
 - TASK-009 — Structured Website Editor Foundation — **DONE**
 - TASK-010 — Asset Management and Cloudflare R2 Integration — **DONE**
+- TASK-011 — Draft Editing, Autosave and Revision Safety — **DONE**
 
 ## P0 — Product Foundations
 
-- TASK-011 — Draft Editing, Autosave and Revision Safety — **IN PROGRESS**
-- TASK-012 — Publication Model and Publish Workflow
+- TASK-012 — Publication Model and Publish Workflow — **IN PROGRESS**
 - TASK-013 — Public Website Renderer
 
 ## P1 — Production Readiness
