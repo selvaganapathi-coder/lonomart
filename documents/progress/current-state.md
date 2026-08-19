@@ -4,11 +4,13 @@
 
 ## Phase
 
-Structured website editing, draft persistence, asset management, and revision safety.
+Publication model and draft-to-published workflow.
 
 ## Current task
 
-TASK-011 — Draft Editing, Autosave and Revision Safety — **IN PROGRESS**.
+TASK-012 — Publication Model and Publish Workflow — **IN PROGRESS**.
+
+TASK-011 — Draft Editing, Autosave and Revision Safety — **DONE**.
 
 TASK-010 — Asset Management and Cloudflare R2 Integration — **DONE**.
 
@@ -51,36 +53,35 @@ Lonomart is a Next.js 16.3.1 App Router application using TypeScript, React 19.2
 - GitHub Actions CI validation for pull requests and master pushes.
 - Structured website editor foundation with page/section content persistence.
 - Website asset library foundation and Cloudflare R2 integration.
-
-## TASK-010 Implementation Status
-
-Completed and merged to `master`:
-
-- Added WebsiteAsset model and migration.
-- Added Cloudflare R2 binding configuration.
-- Added OpenNext R2 storage adapter.
-- Added authenticated asset list/upload API.
-- Added authenticated asset read/delete API.
-- Added image validation and 10 MB size limit.
-- Added website asset library UI.
-- Added editor → Assets navigation.
-
-Local Windows `next dev` can list assets, but direct R2 binding access through `getCloudflareContext()` is limited by the local OpenNext/Workers runtime. Cloudflare/OpenNext build verification is performed in CI.
+- Draft autosave and optimistic revision safety.
 
 ## TASK-011 Implementation Status
 
-In progress on `agent/task-011-draft-autosave-revisions`:
+Completed and merged to `master`:
 
 - Added `WebsiteSection.revision` optimistic-concurrency field.
 - Added `WebsiteSectionRevision` history model and migration.
 - Made section PATCH saves revision-aware and atomic.
 - Rejects stale writes with HTTP `409` / `REVISION_CONFLICT`.
-- Preserves each successful section version in revision history.
 - Added editor autosave with debounced persistence.
 - Added save-state feedback and manual save fallback.
 - Added revision-aware editor hydration.
 - Verified local autosave persistence and refresh recovery.
 - Verified revision-conflict behavior.
+
+## TASK-012 Implementation Status
+
+In progress on `agent/task-012-publish-workflow`:
+
+- Added `WebsitePublication` as the durable published snapshot boundary.
+- Added `Website.draftRevision` to distinguish draft changes from the last published revision.
+- Added publication migration and unique current-publication relationship.
+- Added authenticated ownership-scoped publish endpoint.
+- Publish captures website, pages and structured sections into an immutable snapshot for that publication version.
+- Added publication versioning for subsequent publishes.
+- Added authenticated unpublish endpoint.
+- Added editor publish/unpublish controls and unpublished-change indication.
+- Draft edits continue against the editable `WebsitePage`/`WebsiteSection` records and do not mutate the published snapshot.
 
 ## Current Product Features
 
@@ -103,59 +104,38 @@ Implemented:
 - Website asset library foundation
 - Draft autosave
 - Revision-safe section persistence
+- Publication snapshot and publish/unpublish workflow
 
 Not yet implemented:
 
-- Publishing
 - Public website renderer
+- Public asset delivery
 - SEO
 - Custom domains
 - Billing
 
 ## Architecture Status
 
-The website data boundary remains:
-
-```text
-Website
-  ↓
-WebsitePage
-  ↓
-WebsiteSection
-  ↓
-Structured JSON content
-  ↓
-Revision-safe persistence
-  ↓
-Renderer / Editor
-```
-
-Revision safety is implemented as optimistic concurrency:
-
-```text
-Client expected revision
-        ↓
-Atomic section update WHERE id + revision
-        ↓
-Success → increment revision + create history record
-Conflict → HTTP 409 / REVISION_CONFLICT
-```
-
-Asset storage remains a separate owned resource:
+The editable and published website states are now explicitly separated:
 
 ```text
 User
   ↓
 Website
-  ↓
-WebsiteAsset metadata
-  ↓
-Cloudflare R2 object
+  ├── Draft: WebsitePage → WebsiteSection → structured JSON
+  │             ↓
+  │        autosave + revisions
+  │
+  └── Published: WebsitePublication
+                  ↓
+             versioned snapshot
 ```
+
+Publishing copies the current draft structure into `WebsitePublication.snapshot`. Subsequent draft edits do not mutate the published snapshot. Re-publishing creates the next publication version and replaces the current published snapshot. Unpublishing removes the current publication and returns the website to DRAFT status.
 
 ## Security Status
 
-Better Auth continues to provide database-backed sessions. Website, section, revision, and asset operations require an authenticated server session and are scoped by the authenticated user's website ownership. No client-supplied owner ID is trusted.
+Better Auth continues to provide database-backed sessions. Website, section, revision, publication, and asset operations require an authenticated server session and are scoped by the authenticated user's website ownership. No client-supplied owner ID is trusted.
 
 ## CI Status
 
@@ -171,16 +151,8 @@ GitHub Actions validates pull requests to `master` and pushes to `master` with:
 
 ## Verification Status
 
-TASK-011 local verification completed:
-
-- `npm run lint` — passed.
-- `npx tsc --noEmit` — passed.
-- `npm run test` — passed.
-- `npx prisma validate` — passed.
-- `npx prisma migrate status` — database up to date.
-- Autosave persistence and refresh recovery — verified.
-- Revision conflict protection — verified.
+TASK-012 implementation verification is pending local database migration, lint, TypeScript, tests, and publish/unpublish functional checks.
 
 ## Next Recommended Task
 
-TASK-012 — Publication Model and Publish Workflow.
+TASK-013 — Public Website Renderer.
