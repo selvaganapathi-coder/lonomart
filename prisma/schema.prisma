@@ -77,19 +77,19 @@ model Verification {
 }
 
 model Website {
-  id                String        @id @default(cuid())
-  userId            String
-  name              String
-  slug              String        @unique
-  status            WebsiteStatus @default(DRAFT)
-  templateKey       String
-  templateVersion   Int           @default(1)
-  businessProfile   Json
-  draftRevision     Int           @default(0)
-  createdAt         DateTime      @default(now())
-  updatedAt         DateTime      @updatedAt
+  id                  String        @id @default(cuid())
+  userId              String
+  name                String
+  slug                String        @unique
+  status              WebsiteStatus @default(DRAFT)
+  templateKey         String
+  templateVersion     Int           @default(1)
+  businessProfile     Json
+  draftRevision       Int           @default(0)
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
 
-  user        User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User                       @relation(fields: [userId], references: [id], onDelete: Cascade)
   pages       WebsitePage[]
   assets      WebsiteAsset[]
   revisions   WebsiteSectionRevision[]
@@ -132,7 +132,7 @@ model WebsiteSection {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  page      Website                  @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  page      WebsitePage             @relation(fields: [pageId], references: [id], onDelete: Cascade)
   revisions WebsiteSectionRevision[]
 
   @@index([pageId])
@@ -158,13 +158,13 @@ model WebsiteSectionRevision {
 }
 
 model WebsitePublication {
-  id                  String   @id @default(cuid())
-  websiteId           String   @unique
-  version             Int      @default(1)
+  id                    String   @id @default(cuid())
+  websiteId             String   @unique
+  version               Int      @default(1)
   publishedDraftRevision Int
-  snapshot            Json
-  publishedAt         DateTime @default(now())
-  updatedAt           DateTime @updatedAt
+  snapshot              Json
+  publishedAt           DateTime @default(now())
+  updatedAt             DateTime @updatedAt
 
   website Website @relation(fields: [websiteId], references: [id], onDelete: Cascade)
 
