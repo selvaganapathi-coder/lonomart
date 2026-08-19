@@ -42,6 +42,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ we
       await tx.websiteSectionRevision.create({
         data: { id: crypto.randomUUID(), websiteId, sectionId: section.id, revision: nextRevision, content },
       });
+      await tx.website.update({ where: { id: websiteId }, data: { draftRevision: { increment: 1 } } });
       return nextRevision;
     });
 

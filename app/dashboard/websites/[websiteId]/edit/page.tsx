@@ -5,6 +5,7 @@ import { notFound, redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { Editor } from "./editor";
+import { PublishControl } from "./publish-control";
 
 export default async function WebsiteEditorPage({
   params,
@@ -18,6 +19,7 @@ export default async function WebsiteEditorPage({
   const website = await prisma.website.findFirst({
     where: { id: websiteId, userId: session.user.id },
     include: {
+      publication: { select: { publishedDraftRevision: true } },
       pages: {
         orderBy: { sortOrder: "asc" },
         include: { sections: { orderBy: { sortOrder: "asc" } } },
@@ -44,6 +46,9 @@ export default async function WebsiteEditorPage({
     })),
   };
 
+  const published = website.publication !== null;
+  const hasUnpublishedChanges = !published || website.draftRevision !== website.publication?.publishedDraftRevision;
+
   return (
     <main className="min-h-screen bg-slate-100 text-slate-950">
       <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur-xl">
@@ -52,10 +57,12 @@ export default async function WebsiteEditorPage({
             <Link href="/dashboard" className="shrink-0 text-sm font-medium text-slate-500 no-underline hover:text-slate-950">← Dashboard</Link>
             <span className="hidden h-5 w-px bg-slate-200 sm:block" />
             <span className="truncate text-sm font-semibold">{website.name}</span>
-            <span className="rounded-full bg-amber-50 px-2.5 py-1 text-[11px] font-medium text-amber-700">Draft</span>
+            <span className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${published ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>{published ? "Published" : "Draft"}</span>
+            {published && hasUnpublishedChanges && <span className="hidden rounded-full bg-amber-50 px-2.5 py-1 text-[11px] font-medium text-amber-700 sm:inline">Unpublished changes</span>}
           </div>
           <div className="flex items-center gap-2">
-            <Link href={`/dashboard/websites/${website.id}/assets`} className="inline-flex h-9 items-center rounded-lg border border-slate-200 bg-white px-3.5 text-sm font-medium text-slate-700 no-underline shadow-sm hover:bg-slate-50">Assets</Link>
+            <PublishControl websiteId={website.id} publishedDraftRevision={website.publication?.publishedDraftRevision ?? null} draftRevision={website.draftRevision} />
+            <Link href={`/dashboard/websites/${website.id}/assets`} className="hidden h-9 items-center rounded-lg border border-slate-200 bg-white px-3.5 text-sm font-medium text-slate-700 no-underline shadow-sm hover:bg-slate-50 sm:inline-flex">Assets</Link>
             <Link href={`/dashboard/websites/${website.id}/preview`} className="inline-flex h-9 items-center rounded-lg border border-slate-200 bg-white px-3.5 text-sm font-medium text-slate-700 no-underline shadow-sm hover:bg-slate-50">Preview</Link>
           </div>
         </div>
