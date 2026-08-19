@@ -24,18 +24,37 @@ export function AssetLibrary({ websiteId }: { websiteId: string }) {
   const [uploading, startUpload] = useTransition();
 
   async function loadAssets() {
-    setLoading(true);
     const response = await fetch(`/api/websites/${websiteId}/assets`, { cache: "no-store" });
     if (response.ok) {
       const data = (await response.json()) as { assets: Asset[] };
       setAssets(data.assets);
+      setMessage("");
     } else {
       setMessage("Unable to load assets.");
     }
     setLoading(false);
   }
 
-  useEffect(() => { void loadAssets(); }, [websiteId]);
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+
+    async function fetchAssets() {
+      const response = await fetch(`/api/websites/${websiteId}/assets`, { cache: "no-store" });
+      if (cancelled) return;
+      if (response.ok) {
+        const data = (await response.json()) as { assets: Asset[] };
+        setAssets(data.assets);
+        setMessage("");
+      } else {
+        setMessage("Unable to load assets.");
+      }
+      setLoading(false);
+    }
+
+    void fetchAssets();
+    return () => { cancelled = true; };
+  }, [websiteId]);
 
   function upload(file: File) {
     setMessage("");
@@ -48,6 +67,7 @@ export function AssetLibrary({ websiteId }: { websiteId: string }) {
         setMessage(data.error ?? "Upload failed.");
         return;
       }
+      setLoading(true);
       await loadAssets();
     });
   }
