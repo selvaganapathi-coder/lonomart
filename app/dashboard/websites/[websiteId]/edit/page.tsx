@@ -53,7 +53,10 @@ export default async function WebsiteEditorPage({
             <span className="truncate text-sm font-semibold">{website.name}</span>
             <span className="rounded-full bg-amber-50 px-2.5 py-1 text-[11px] font-medium text-amber-700">Draft</span>
           </div>
-          <Link href={`/dashboard/websites/${website.id}/preview`} className="inline-flex h-9 items-center rounded-lg border border-slate-200 bg-white px-3.5 text-sm font-medium text-slate-700 no-underline shadow-sm hover:bg-slate-50">Preview</Link>
+          <div className="flex items-center gap-2">
+            <Link href={`/dashboard/websites/${website.id}/assets`} className="inline-flex h-9 items-center rounded-lg border border-slate-200 bg-white px-3.5 text-sm font-medium text-slate-700 no-underline shadow-sm hover:bg-slate-50">Assets</Link>
+            <Link href={`/dashboard/websites/${website.id}/preview`} className="inline-flex h-9 items-center rounded-lg border border-slate-200 bg-white px-3.5 text-sm font-medium text-slate-700 no-underline shadow-sm hover:bg-slate-50">Preview</Link>
+          </div>
         </div>
       </header>
       <Editor initialWebsite={initialWebsite} />
