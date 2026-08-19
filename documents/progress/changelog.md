@@ -2,8 +2,23 @@
 
 ## 2026-08-19
 
-### TASK-011 — Draft Editing, Autosave and Revision Safety — In Progress
+### TASK-012 — Publication Model and Publish Workflow — In Progress
 
+- Added `Website.draftRevision` to track the current editable draft generation.
+- Added `WebsitePublication` as the durable current published snapshot.
+- Added publication versioning and published-draft revision tracking.
+- Added publication database migration.
+- Added authenticated, ownership-scoped publish API.
+- Added authenticated, ownership-scoped unpublish API.
+- Publishing snapshots the current website, pages and structured sections without changing the editable draft records.
+- Re-publishing creates the next publication version and replaces the current published snapshot.
+- Draft section saves increment the website draft revision.
+- Added editor publish/unpublish controls and unpublished-change indication.
+- Added TASK-012 architecture and workflow documentation.
+
+### TASK-011 — Completed
+
+- Completed Draft Editing, Autosave and Revision Safety.
 - Added `revision` optimistic-concurrency tracking to `WebsiteSection`.
 - Added `WebsiteSectionRevision` history records for successful section saves.
 - Added a migration for section revision tracking and revision history.
@@ -15,6 +30,7 @@
 - Verified autosave persistence and refresh recovery locally.
 - Verified stale revision protection locally.
 - Verified lint, TypeScript, tests, Prisma validation and migration status.
+- Merged TASK-011 to `master`.
 
 ### TASK-010 — Completed
 
@@ -32,9 +48,9 @@
 
 ### Documentation Sync
 
-- Updated the backlog to mark TASK-010 complete and TASK-011 active.
-- Updated current state to reflect asset management and revision-safe draft editing.
-- Added TASK-011 implementation, architecture, and verification status to the project history.
+- Marked TASK-011 complete in the backlog after merge.
+- Updated current state to reflect publication as the next product foundation.
+- Added TASK-012 implementation, architecture, and verification status to the project history.
 
 ### TASK-009 — Completed
 
