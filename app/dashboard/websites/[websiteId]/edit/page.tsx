@@ -38,6 +38,7 @@ export default async function WebsiteEditorPage({
         id: section.id,
         type: section.type,
         visible: section.visible,
+        revision: section.revision,
         content: section.content as Record<string, unknown>,
       })),
     })),
