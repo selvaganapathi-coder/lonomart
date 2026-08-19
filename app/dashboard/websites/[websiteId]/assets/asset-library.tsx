@@ -37,7 +37,6 @@ export function AssetLibrary({ websiteId }: { websiteId: string }) {
 
   useEffect(() => {
     let cancelled = false;
-    setLoading(true);
 
     async function fetchAssets() {
       const response = await fetch(`/api/websites/${websiteId}/assets`, { cache: "no-store" });
