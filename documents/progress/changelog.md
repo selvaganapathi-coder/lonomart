@@ -1,9 +1,24 @@
 # Changelog
 
-## 2026-08-18
+## 2026-08-19
 
-### TASK-010 — In Progress
+### TASK-011 — Draft Editing, Autosave and Revision Safety — In Progress
 
+- Added `revision` optimistic-concurrency tracking to `WebsiteSection`.
+- Added `WebsiteSectionRevision` history records for successful section saves.
+- Added a migration for section revision tracking and revision history.
+- Updated the section PATCH API to require the client's expected revision.
+- Made section updates atomic against the expected revision.
+- Added HTTP 409 `REVISION_CONFLICT` handling for stale writes.
+- Added debounced editor autosave and save-state feedback.
+- Added manual save fallback and revision-aware editor hydration.
+- Verified autosave persistence and refresh recovery locally.
+- Verified stale revision protection locally.
+- Verified lint, TypeScript, tests, Prisma validation and migration status.
+
+### TASK-010 — Completed
+
+- Completed Asset Management and Cloudflare R2 Integration.
 - Added the `WebsiteAsset` PostgreSQL model and migration.
 - Added the `LONOMART_ASSETS` Cloudflare R2 binding.
 - Added an OpenNext R2 storage adapter using the Worker binding API.
@@ -12,8 +27,14 @@
 - Restricted TASK-010 v1 uploads to JPEG, PNG and WebP images up to 10 MB.
 - Added a responsive website asset library UI.
 - Added editor → Assets navigation.
-- Enabled OpenNext Cloudflare bindings during local `next dev`.
-- Added TASK-010 implementation and verification documentation.
+- Verified CI Cloudflare/OpenNext build.
+- Merged TASK-010 to `master`.
+
+### Documentation Sync
+
+- Updated the backlog to mark TASK-010 complete and TASK-011 active.
+- Updated current state to reflect asset management and revision-safe draft editing.
+- Added TASK-011 implementation, architecture, and verification status to the project history.
 
 ### TASK-009 — Completed
 
@@ -26,12 +47,6 @@
 - Verified editor save/reload and preview update behavior.
 - Verified lint, TypeScript, tests, Prisma validation/generation, production build and Cloudflare/OpenNext build.
 - Merged TASK-009 to `master`.
-
-### Documentation Sync
-
-- Added the missing TASK-008 completion record for Production Visual Design System & Template Quality.
-- Updated current project state through TASK-008.
-- Corrected the task backlog so completed tasks and the active roadmap match the actual repository history.
 
 ### TASK-008 — Completed
 

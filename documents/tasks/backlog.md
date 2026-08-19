@@ -13,11 +13,11 @@ This backlog reflects the actual implementation sequence in the repository. Hist
 - TASK-007 — GitHub Actions CI — **DONE**
 - TASK-008 — Production Visual Design System & Template Quality — **DONE**
 - TASK-009 — Structured Website Editor Foundation — **DONE**
+- TASK-010 — Asset Management and Cloudflare R2 Integration — **DONE**
 
-## P0 — Next Product Foundations
+## P0 — Product Foundations
 
-- TASK-010 — Asset Management and Cloudflare R2 Integration — **IN PROGRESS**
-- TASK-011 — Draft Editing, Autosave and Revision Safety
+- TASK-011 — Draft Editing, Autosave and Revision Safety — **IN PROGRESS**
 - TASK-012 — Publication Model and Publish Workflow
 - TASK-013 — Public Website Renderer
 
