@@ -27,13 +27,18 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ we
   try {
     const result = await prisma.$transaction(async (tx) => {
       const section = await tx.websiteSection.findFirst({
-        where: { id: sectionId, revision: expectedRevision, page: { websiteId, website: { userId: session.user.id } } },
+        where: { id: sectionId, page: { websiteId, website: { userId: session.user.id } } },
         select: { id: true, revision: true },
       });
-      if (!section) return null;
+      if (!section || section.revision !== expectedRevision) return null;
 
-      const nextRevision = section.revision + 1;
-      await tx.websiteSection.update({ where: { id: section.id }, data: { content, revision: nextRevision } });
+      const nextRevision = expectedRevision + 1;
+      const updated = await tx.websiteSection.updateMany({
+        where: { id: section.id, revision: expectedRevision },
+        data: { content, revision: nextRevision },
+      });
+      if (updated.count !== 1) return null;
+
       await tx.websiteSectionRevision.create({
         data: { id: crypto.randomUUID(), websiteId, sectionId: section.id, revision: nextRevision, content },
       });
